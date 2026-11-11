@@ -1,0 +1,15 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    environment:
+      JWT_SECRET: ${JWT_SECRET:?set JWT_SECRET in your shell or .env}
+      DEMO_USER: ${DEMO_USER:-analyst}
+      DEMO_PASSWORD: ${DEMO_PASSWORD:?set DEMO_PASSWORD in your shell or .env}
+    volumes:
+      - ./models:/app/models:ro
+      - ./data:/app/data
+  web:
+    build: ./frontend
+    ports: ["8080:80"]
+    depends_on: [api]
